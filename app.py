@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import dateutil
 import os
 from functools import wraps
 from io import BytesIO
@@ -7,7 +8,7 @@ from logging.config import dictConfig
 from flask import Flask, url_for, render_template, session, redirect, json, send_file
 from flask_oauthlib.contrib.client import OAuth, OAuth2Application
 from flask_session import Session
-from xero_python.accounting import AccountingApi, ContactPerson, Contact, Contacts
+from xero_python.accounting import AccountingApi, ContactPerson, Contact, Contacts, LineItem, LineItemTracking, Invoice, Invoices
 from xero_python.api_client import ApiClient, serialize
 from xero_python.api_client.configuration import Configuration
 from xero_python.api_client.oauth2 import OAuth2Token
@@ -217,9 +218,58 @@ def get_invoices():
     sub_title = "Total invoices found: {}".format(len(invoices.invoices))
 
     return render_template(
-        "code.html", title="Invoices", code=code, sub_title=sub_title
+        "/code.html", title="Invoices", code=code, sub_title=sub_title
     )
 
+@app.route("/create_invoice")
+@xero_token_required
+def create_invoice():
+    api_instance = AccountingApi(api_client)
+    xero_tenant_id = get_xero_tenant_id()
+    summarize_errors = 'True'
+    unitdp = 2
+    date_value = dateutil.parser.parse('2020-10-10T00:00:00Z')
+    due_date_value = dateutil.parser.parse('2020-10-28T00:00:00Z')
+
+    contact = Contact(
+        contact_id = "375ac066-85a0-4044-a8be-3159856d5c85")
+
+    #line_item_tracking = LineItemTracking(
+    #    tracking_category_id = "00000000-0000-0000-0000-000000000000",
+    #    tracking_option_id = "00000000-0000-0000-0000-000000000000")
+    
+    #line_item_trackings = []    
+    #line_item_trackings.append(line_item_tracking)
+
+    line_item = LineItem(
+        description = "Foobar",
+        quantity = 1.0,
+        unit_amount = 20.0,
+        account_code = "400",
+        tracking = []) #line_item_trackings)
+    
+    line_items = []    
+    line_items.append(line_item)
+
+    invoice = Invoice(
+        type = "ACCREC",
+        contact = contact,
+        date = date_value,
+        due_date = due_date_value,
+        line_items = line_items,
+        reference = "Website Design",
+        status = "AUTHORISED")
+
+    invoices = Invoices( 
+        invoices = [invoice])
+    
+    created_invoices = api_instance.create_invoices(xero_tenant_id, invoices, summarize_errors, unitdp)
+    code = serialize_model(created_invoices)
+    sub_title = "Total invoices created: {}".format(len(created_invoices.invoices))
+
+    return render_template(
+        "/code.html", title="Created Invoices", code=code, sub_title=sub_title
+    )
 
 @app.route("/login")
 def login():
