@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import dateutil
 import os
+import requests
 from functools import wraps
 from io import BytesIO
 from logging.config import dictConfig
@@ -217,6 +218,27 @@ def get_invoices():
     code = serialize_model(invoices)
     sub_title = "Total invoices found: {}".format(len(invoices.invoices))
 
+    return render_template(
+        "/code.html", title="Invoices", code=code, sub_title=sub_title
+    )
+
+@app.route("/create_invoice2")
+@xero_token_required
+def create_invoice2():
+    params = {
+        'client_id': app.config["CLIENT_ID"],
+        'client_secret': app.config["CLIENT_SECRET"],
+        'access_token': json.dumps(obtain_xero_oauth2_token()),
+        'description': 'Monthly Contributor Payment',
+        #'contact_id': '375ac066-85a0-4044-a8be-3159856d5c85',
+        'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
+        'amount': '1000000.99',
+    }
+    proxied_response = requests.get('http://localhost:5001/v1/do/xero/create_invoice', params)
+    sub_title = 'Proxied create invoice response'
+
+    invoices = json.loads(proxied_response.text)
+    code = serialize_model(invoices)
     return render_template(
         "/code.html", title="Invoices", code=code, sub_title=sub_title
     )
