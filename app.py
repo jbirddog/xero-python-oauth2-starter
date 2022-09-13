@@ -235,7 +235,7 @@ def create_invoice2():
         'contact_email': 'jon.herron@yahoo.com',
         'amount': '1000000.99',
     }
-    proxied_response = requests.get('http://localhost:5001/v1/do/xero/create_invoice', params)
+    proxied_response = requests.get('http://localhost:5001/v1/do/xero/CreateInvoice', params)
     sub_title = 'Proxied create invoice response'
 
     invoices = json.loads(proxied_response.text)
