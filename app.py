@@ -230,8 +230,9 @@ def create_invoice2():
         'client_secret': app.config["CLIENT_SECRET"],
         'access_token': json.dumps(obtain_xero_oauth2_token()),
         'description': 'Monthly Contributor Payment',
-        #'contact_id': '375ac066-85a0-4044-a8be-3159856d5c85',
-        'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
+        #'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
+        'contact_name': 'Jon Herron',
+        'contact_email': 'jon.herron@yahoo.com',
         'amount': '1000000.99',
     }
     proxied_response = requests.get('http://localhost:5001/v1/do/xero/create_invoice', params)
