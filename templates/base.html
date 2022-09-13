@@ -15,8 +15,18 @@
 <a href="{{ url_for('get_invoices') }}">Invoices</a> |
 <a href="{{ url_for('refresh_token') }}">Refresh Token</a> |
 <a href="{{ url_for('create_invoice') }}">Create Invoice</a> |
-<a href="{{ url_for('create_invoice2') }}">Create Invoice (Proxied)</a> |
+<hr>
+<marquee>
+Connector Proxy now supports --&gt;
+<a href="{{ url_for('create_invoice2') }}">Create Invoice (Xero)</a> |
+<a href="{{ url_for('get_employee_salary') }}">Get Pay Rate (BambooHR)</a> |
+&lt-- Join the Connector Ring now!!
+</marquee>
+<hr>
 {% block content %}{% endblock %}
 <!--<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script>-->
+<hr>
+<img src="https://cdn.vox-cdn.com/uploads/chorus_asset/file/8688491/hiE5vMs.gif" />
+<br />
 </body>
 </html>

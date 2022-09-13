@@ -40,8 +40,8 @@ oauth = OAuth(app)
 xero = oauth.remote_app(
     name="xero",
     version="2",
-    client_id=app.config["CLIENT_ID"],
-    client_secret=app.config["CLIENT_SECRET"],
+    client_id=app.config["XERO_CLIENT_ID"],
+    client_secret=app.config["XERO_CLIENT_SECRET"],
     endpoint_url="https://api.xero.com/",
     authorization_url="https://login.xero.com/identity/connect/authorize",
     access_token_url="https://identity.xero.com/connect/token",
@@ -57,7 +57,7 @@ api_client = ApiClient(
     Configuration(
         debug=app.config["DEBUG"],
         oauth2_token=OAuth2Token(
-            client_id=app.config["CLIENT_ID"], client_secret=app.config["CLIENT_SECRET"]
+            client_id=app.config["XERO_CLIENT_ID"], client_secret=app.config["XERO_CLIENT_SECRET"]
         ),
     ),
     pool_threads=1,
@@ -226,8 +226,8 @@ def get_invoices():
 @xero_token_required
 def create_invoice2():
     params = {
-        'client_id': app.config["CLIENT_ID"],
-        'client_secret': app.config["CLIENT_SECRET"],
+        'client_id': app.config["XERO_CLIENT_ID"],
+        'client_secret': app.config["XERO_CLIENT_SECRET"],
         'access_token': json.dumps(obtain_xero_oauth2_token()),
         'description': 'Monthly Contributor Payment',
         #'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
@@ -242,6 +242,23 @@ def create_invoice2():
     code = serialize_model(invoices)
     return render_template(
         "/code.html", title="Invoices", code=code, sub_title=sub_title
+    )
+
+@app.route("/get_employee_salary")
+def get_employee_salary():
+    params = {
+        'api_key': app.config['BAMBOOHR_API_KEY'],
+        'subdomain': app.config['BAMBOOHR_SUBDOMAIN'],
+        'employee_id': '4',
+    }
+
+    proxied_response = requests.get('http://localhost:5001/v1/do/bamboohr/GetPayRate', params)
+    sub_title = 'Proxied get pay rate response'
+
+    invoices = json.loads(proxied_response.text)
+    code = serialize_model(invoices)
+    return render_template(
+        "/code.html", title="Pay Rate", code=code, sub_title=sub_title
     )
 
 @app.route("/create_invoice")
