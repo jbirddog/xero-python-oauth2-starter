@@ -348,7 +348,7 @@ def export_token():
         buffer,
         mimetype="x.python",
         as_attachment=True,
-        attachment_filename="oauth2_token.py",
+        download_name="oauth2_token.py",
     )
 
 
