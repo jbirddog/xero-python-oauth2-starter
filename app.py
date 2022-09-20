@@ -34,6 +34,8 @@ if app.config["ENV"] != "production":
 # configure persistent session cache
 Session(app)
 
+CONNECTOR_PROXY_URL = app.config['CONNECTOR_PROXY_URL']
+
 # configure flask-oauthlib application
 # TODO fetch config from https://identity.xero.com/.well-known/openid-configuration #1
 oauth = OAuth(app)
@@ -235,7 +237,7 @@ def create_invoice2():
         'contact_email': 'jon.herron@yahoo.com',
         'amount': '1000000.99',
     }
-    proxied_response = requests.get('http://localhost:5001/v1/do/xero/CreateInvoice', params)
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/xero/CreateInvoice', params)
     sub_title = 'Proxied create invoice response'
 
     invoices = json.loads(proxied_response.text)
@@ -252,7 +254,7 @@ def get_employee_salary():
         'employee_id': '4',
     }
 
-    proxied_response = requests.get('http://localhost:5001/v1/do/bamboohr/GetPayRate', params)
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/bamboohr/GetPayRate', params)
     sub_title = 'Proxied get pay rate response'
 
     invoices = json.loads(proxied_response.text)
@@ -260,6 +262,14 @@ def get_employee_salary():
     return render_template(
         "/code.html", title="Pay Rate", code=code, sub_title=sub_title
     )
+
+@app.route('/api_commands')
+def api_commands():
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/commands')
+    code = json.dumps(json.loads(proxied_response.text), indent=4)
+    sub_title = 'Commands'
+
+    return render_template("/code.html", title="Commands", code=code, sub_title=sub_title)
 
 @app.route("/create_invoice")
 @xero_token_required
