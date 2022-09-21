@@ -6,7 +6,7 @@ from functools import wraps
 from io import BytesIO
 from logging.config import dictConfig
 
-from flask import Flask, url_for, render_template, session, redirect, json, send_file
+from flask import Flask, url_for, render_template, session, redirect, json, send_file, request
 from flask_oauthlib.contrib.client import OAuth, OAuth2Application
 from flask_session import Session
 from xero_python.accounting import AccountingApi, ContactPerson, Contact, Contacts, LineItem, LineItemTracking, Invoice, Invoices
@@ -343,6 +343,11 @@ def login():
     response = xero.authorize(callback_uri=redirect_url)
     return response
 
+@app.route('/proxy_callback')
+def proxy_callback():
+    response = json.loads(request.args['response'])
+    store_xero_oauth2_token(response)
+    return redirect(url_for("index", _external=True))
 
 @app.route("/callback")
 def oauth_callback():
