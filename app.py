@@ -283,7 +283,9 @@ def proxy_auths():
 def proxy_xero_oauth():
     sub_title = 'Xero OAuth'
 
-    link = f'{CONNECTOR_PROXY_URL}/auth/xero/OAuth?client_id={app.config["XERO_CLIENT_ID"]}&client_secret={app.config["XERO_CLIENT_SECRET"]}'
+    redirect_url = 'http://localhost:5000/proxy_callback'
+
+    link = f'{CONNECTOR_PROXY_URL}/auth/xero/OAuth?client_id={app.config["XERO_CLIENT_ID"]}&client_secret={app.config["XERO_CLIENT_SECRET"]}&redirect_url={redirect_url}'
 
     return render_template("/code.html", title="Xero OAuth", sub_title=sub_title, link=link)
 
