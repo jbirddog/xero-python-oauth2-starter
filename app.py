@@ -263,13 +263,29 @@ def get_employee_salary():
         "/code.html", title="Pay Rate", code=code, sub_title=sub_title
     )
 
-@app.route('/api_commands')
-def api_commands():
+@app.route('/proxy_commands')
+def proxy_commands():
     proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/commands')
     code = json.dumps(json.loads(proxied_response.text), indent=4)
     sub_title = 'Commands'
 
     return render_template("/code.html", title="Commands", code=code, sub_title=sub_title)
+
+@app.route('/proxy_auths')
+def proxy_auths():
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/auths')
+    code = json.dumps(json.loads(proxied_response.text), indent=4)
+    sub_title = 'Auths'
+
+    return render_template("/code.html", title="Auths", code=code, sub_title=sub_title)
+
+@app.route('/proxy_xero_oauth')
+def proxy_xero_oauth():
+    sub_title = 'Xero OAuth'
+
+    link = f'{CONNECTOR_PROXY_URL}/auth/xero/OAuth?client_id={app.config["XERO_CLIENT_ID"]}&client_secret={app.config["XERO_CLIENT_SECRET"]}'
+
+    return render_template("/code.html", title="Xero OAuth", sub_title=sub_title, link=link)
 
 @app.route("/create_invoice")
 @xero_token_required
