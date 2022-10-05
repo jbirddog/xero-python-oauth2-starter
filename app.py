@@ -289,7 +289,7 @@ def create_and_upload_pdf():
         'aws_access_key_id': app.config['AWS_ACCESS_KEY_ID'],
         'aws_secret_access_key': app.config['AWS_SECRET_ACCESS_KEY'],
     }
-    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/invoice/CreatePDFAndUploadToS3', params)
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/invoicepdf/CreateAndUploadToS3', params)
     code = json.dumps(json.loads(proxied_response.text), indent=1)
     sub_title = 'Create and Upload PDF to S3'
 
