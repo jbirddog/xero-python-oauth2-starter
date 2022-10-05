@@ -279,6 +279,22 @@ def proxy_auths():
 
     return render_template("/code.html", title="Auths", code=code, sub_title=sub_title)
 
+@app.route('/create_and_upload_pdf')
+def create_and_upload_pdf():
+    params = {
+        'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {{ name }}<p>Amount: {{ amount }}</body</html>',
+        'name': 'Joe Bob',
+        'amount': '$123.45',
+        'aws_bucket': 'sartography-status-pdfs',
+        'aws_access_key_id': app.config['AWS_ACCESS_KEY_ID'],
+        'aws_secret_access_key': app.config['AWS_SECRET_ACCESS_KEY'],
+    }
+    proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/invoice/CreatePDFAndUploadToS3', params)
+    code = json.dumps(json.loads(proxied_response.text), indent=1)
+    sub_title = 'Create and Upload PDF to S3'
+
+    return render_template('/code.html', title='Invoice PDF -> S3', code=code, sub_title=sub_title)
+
 @app.route('/proxy_xero_oauth')
 def proxy_xero_oauth():
     sub_title = 'Xero OAuth'
