@@ -283,7 +283,7 @@ def proxy_auths():
 @app.route('/create_and_upload_pdf')
 def create_and_upload_pdf():
     params = {
-        'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {{ name }}<p>Amount: {{ amount }}</body</html>',
+        'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {name}<p>Amount: {amount}</body</html>',
         'name': 'Joe Bob',
         'amount': '$123.45',
         'aws_bucket': 'sartography-status-pdfs',
