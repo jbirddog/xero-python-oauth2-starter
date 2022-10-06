@@ -229,8 +229,6 @@ def get_invoices():
 @xero_token_required
 def create_invoice2():
     params = {
-        'client_id': app.config["XERO_CLIENT_ID"],
-        'client_secret': app.config["XERO_CLIENT_SECRET"],
         'access_token': json.dumps(obtain_xero_oauth2_token()),
         'description': 'Monthly Contributor Payment',
         #'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
@@ -250,8 +248,6 @@ def create_invoice2():
 @app.route("/get_employee_salary")
 def get_employee_salary():
     params = {
-        'api_key': app.config['BAMBOOHR_API_KEY'],
-        'subdomain': app.config['BAMBOOHR_SUBDOMAIN'],
         'employee_id': '4',
     }
 
@@ -286,10 +282,7 @@ def create_and_upload_pdf():
         'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {name}<p>Amount: {amount}</body</html>',
         'name': 'Joe Bob',
         'amount': '$123.45',
-        'aws_bucket': 'sartography-status-pdfs',
         'aws_object_name': f'invoice_{time.time()}.pdf',
-        'aws_access_key_id': app.config['AWS_ACCESS_KEY_ID'],
-        'aws_secret_access_key': app.config['AWS_SECRET_ACCESS_KEY'],
     }
     proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/invoicepdf/CreateAndUploadToS3', params)
     code = json.dumps(json.loads(proxied_response.text), indent=1)
