@@ -279,9 +279,7 @@ def proxy_auths():
 @app.route('/create_and_upload_pdf')
 def create_and_upload_pdf():
     params = {
-        'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {name}<p>Amount: {amount}</body</html>',
-        'name': 'Joe Bob',
-        'amount': '$123.45',
+        'template': '<html><head><title>Invoice</title></head><body><h1>Invoice</h1><p>Name: {{ name }}<p>Amount: {{ amount }}</body</html>',
         'aws_object_name': f'invoice_{time.time()}.pdf',
     }
     proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/invoicepdf/CreateAndUploadToS3', params)
