@@ -2,6 +2,7 @@
 import dateutil
 import os
 import requests
+import time
 from functools import wraps
 from io import BytesIO
 from logging.config import dictConfig
@@ -286,6 +287,7 @@ def create_and_upload_pdf():
         'name': 'Joe Bob',
         'amount': '$123.45',
         'aws_bucket': 'sartography-status-pdfs',
+        'aws_object_name': f'invoice_{time.time()}.pdf',
         'aws_access_key_id': app.config['AWS_ACCESS_KEY_ID'],
         'aws_secret_access_key': app.config['AWS_SECRET_ACCESS_KEY'],
     }
