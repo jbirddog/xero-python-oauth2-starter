@@ -232,8 +232,8 @@ def create_invoice2():
         'access_token': json.dumps(obtain_xero_oauth2_token()),
         'description': 'Monthly Contributor Payment',
         #'contact_id': '2aa14f27-1b27-45a0-94ee-80d19f60dc92',
-        'contact_name': 'Jon Herron',
-        'contact_email': 'jon.herron@yahoo.com',
+        'contact_name': 'Foo Bar',
+        'contact_email': 'ben.bowden@24locks.com',
         'amount': '1000000.99',
     }
     proxied_response = requests.get(f'{CONNECTOR_PROXY_URL}/do/xero/CreateInvoice', params)
@@ -330,7 +330,7 @@ def create_invoice():
     due_date_value = dateutil.parser.parse('2020-10-28T00:00:00Z')
 
     contact = Contact(
-        contact_id = "375ac066-85a0-4044-a8be-3159856d5c85")
+        contact_id = "de73f5b8-6ead-4639-91b9-f80d363e757b")
 
     #line_item_tracking = LineItemTracking(
     #    tracking_category_id = "00000000-0000-0000-0000-000000000000",
@@ -343,7 +343,8 @@ def create_invoice():
         description = "Foobar",
         quantity = 1.0,
         unit_amount = 20.0,
-        account_code = "400",
+        account_code = "612",
+        tax_type = "NONE",
         tracking = []) #line_item_trackings)
     
     line_items = []    
