@@ -330,7 +330,7 @@ def create_invoice():
     due_date_value = dateutil.parser.parse('2020-10-28T00:00:00Z')
 
     contact = Contact(
-        contact_id = "de73f5b8-6ead-4639-91b9-f80d363e757b")
+        contact_id = "788ce589-9d7f-4a56-af1a-b3e8628541ec")
 
     #line_item_tracking = LineItemTracking(
     #    tracking_category_id = "00000000-0000-0000-0000-000000000000",
@@ -343,7 +343,7 @@ def create_invoice():
         description = "Foobar",
         quantity = 1.0,
         unit_amount = 20.0,
-        account_code = "612",
+        account_code = "400",
         tax_type = "NONE",
         tracking = []) #line_item_trackings)
     
